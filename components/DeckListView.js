@@ -1,36 +1,35 @@
 import React, { Component } from 'react'
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
+import { Text, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native'
 
 import { _store_data, getDecks } from '../utils/helper'
 
 class DeckList extends Component {
 
     state = {
-        cards: {}
+        decks: {}
     }
 
     async componentDidMount(){
-        _store_data();
-        const result = await getDecks();
-        console.log(result)
+        const result = await getDecks()
         this.setState({
-            cards: result,
+            decks: result,
         })
     }
     
     render() {
-        const { cards } = this.state;
+        const { decks } = this.state
         
         return(
-            <View style={styles.container}>
+            <View style={styles.container} >
                 <Text style={styles.title}>
-                    Decks
+                   Decks
                 </Text>
                 {/* Card View */}             
-                <View style={styles.cardList}>
+                <ScrollView contentContainerStyle={styles.cardList}>
                 {
-                    Object.keys(cards).map((title) => {
+                    Object.keys(decks).map((title) => {
                         // Display individual cards
+                        const questions = decks[title].questions
                         return(
                             <TouchableOpacity key={title} style={styles.card}>
                                 <Text style={styles.cardTitle}>
@@ -38,16 +37,16 @@ class DeckList extends Component {
                                 </Text>
                                 <Text style={styles.cardText}>
                                     {
-                                        cards[title].questions.length <= 1 ? 
-                                            `${cards[title].questions.length} Question` :
-                                            `${cards[title].questions.length} Questions`                  
+                                        questions.length <= 1 ? 
+                                            `${questions.length} Question` :
+                                            `${questions.length} Questions`                  
                                     }
                                 </Text>
                             </TouchableOpacity>
                             )
                         })
                     }
-                </View>
+                </ScrollView>
             </View>
         )
     }
@@ -57,27 +56,27 @@ class DeckList extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'space-around',
         padding: 20,
-        backgroundColor: 'white',
+        justifyContent: 'center',
+        backgroundColor: '#f5f5f5',
     },
     title: {
         padding: 10,
         textAlign: 'center',
         color: 'black',
-        backgroundColor: 'silver',
-        fontSize: 30,
+        backgroundColor: '#f7f7f7',
+        fontSize: 20,
         borderRadius: 20,
     },
     cardList: {
-        flex: 1,
+        
         padding: 10,
         alignItems: 'center',
     },
     card: {
-        width: 300,
         flex: 1,
-        maxHeight: 230,
+        width: 300,
+        minHeight: 230,
         padding: 10,
         margin: 10,
         alignItems: 'center',
@@ -85,6 +84,7 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderWidth: 1,
         borderRadius: 20,
+        backgroundColor: '#f9f9f9',
     },
     cardTitle: {
         fontSize: 20,
