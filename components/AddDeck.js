@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, TouchableOpactiy, TextInput, StyleSheet, Alert } from 'react-native'
 
-import { saveDeckTitle, clearDecks } from "../utils/helper"
+import { saveDeckTitle } from "../utils/helper"
 import TextButton from "./TextButton"
 
 class AddDeck extends React.Component {
@@ -29,10 +29,6 @@ class AddDeck extends React.Component {
         }
     }
 
-    clearAllDecks = () => {
-        clearDecks();
-    }
-
     render() {
        return(
         <View style={styles.container}>
@@ -50,7 +46,6 @@ class AddDeck extends React.Component {
             >
             </TextInput>
             <TextButton name='Submit' onPress={this.saveDeck}/>
-            <TextButton name='Clear all Decks' onPress={this.clearAllDecks} />
         </View>
        )
     }
