@@ -11,7 +11,9 @@ class DeckList extends Component {
     }
 
     async componentDidMount(){
-        const result = await getDecks()
+        const result = await getDecks().catch((error) => {
+            console.error('Deck Data could not be fetched', error)
+        })
         this.setState({
             decks: result,
         })

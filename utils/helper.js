@@ -52,6 +52,7 @@ export const getDecks = async () => {
         return data
     }catch(error){
         console.error('Error while fetching data from AsynStorage', error)
+        throw error
     }
 }
 
@@ -76,6 +77,7 @@ export const getDeck = async (deckId) => {
         return data[deckId]
     }catch(error){
         console.error('Error while fetching data from AsynStorage', error)
+        throw error
     }
 }
 

@@ -15,7 +15,9 @@ export default class QuizView extends React.Component {
 
     async componentDidMount() {
         const { deckTitle } = this.props.route.params
-        const deckData = await getDeck(deckTitle)  
+        const deckData = await getDeck(deckTitle).catch((error) => {
+            console.log('Questions could not be loaded', error)
+        }) 
         if( deckData !== undefined){
             const totalQuestions = deckData.questions.length
             this.setState({
@@ -26,7 +28,6 @@ export default class QuizView extends React.Component {
     }
 
     handleReset = () => {
-        // reset the state
         this.setState((state) => ({
             answeredQuestions: 0,
             correctAnswers: 0,
@@ -34,8 +35,6 @@ export default class QuizView extends React.Component {
     }
 
     handleCorrect = () => {
-        // change state 
-        console.log('Handling Correct')
         this.setState((prevState) => ({
             answeredQuestions: prevState.answeredQuestions + 1,
             correctAnswers: prevState.correctAnswers + 1,
@@ -43,7 +42,6 @@ export default class QuizView extends React.Component {
     }
 
     handleIncorrect = () => {
-        console.log('Handling Incorrect')
         this.setState((prevState) => ({
             answeredQuestions: prevState.answeredQuestions + 1,
         }))
@@ -51,7 +49,6 @@ export default class QuizView extends React.Component {
 
     render() {
         const { deckData, totalQuestions, answeredQuestions, correctAnswers } = this.state;   
-        // const arr  = deckData.questions
 
         if(deckData === null){
             return(
@@ -75,7 +72,6 @@ export default class QuizView extends React.Component {
             )
         }
 
-        // All Questions are answered 
         if( answeredQuestions === totalQuestions ){
             return(
                 <View style={styles.container}>
@@ -88,7 +84,10 @@ export default class QuizView extends React.Component {
                     <Text style={[styles.infoText, { color: '#10A5F5' }]}>
                         Keep Praciticing!!
                     </Text>          
-                    <TextButton name='Retake Quiz' onPress={this.handleReset}/>          
+                   <View>
+                        <TextButton name='Retake Quiz' onPress={this.handleReset}/>      
+                        <TextButton name='Return' onPress={() => this.props.navigation.goBack()}/>    
+                   </View>
                 </View>
             )
         }
@@ -96,7 +95,7 @@ export default class QuizView extends React.Component {
         return(
             <View style={styles.container}>
                 <Text style={styles.plainText}>
-                    Question { answeredQuestions } / { totalQuestions }
+                    Question { answeredQuestions + 1 } / { totalQuestions }
                 </Text> 
 
                 <CardFlip style={styles.cardContainer} ref={card => (this.card = card)}>

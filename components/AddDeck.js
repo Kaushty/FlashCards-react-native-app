@@ -19,7 +19,7 @@ class AddDeck extends React.Component {
                 deckName: '',
             })
             // Return to DeckList
-            this.props.navigation.navigate('Decks', { isUpdated: true })
+            this.props.navigation.navigate('ViewDeck', { deckTitle: deckName })
         }
         else{
             Alert.alert(

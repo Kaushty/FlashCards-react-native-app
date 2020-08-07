@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
 
+import { setLocalNotification } from "./utils/notificationHandler";
 import DeckList from './components/DeckListView'
 import AddDeck from './components/AddDeck'
 import ViewDeck from './components/ViewDeck'
@@ -54,13 +55,20 @@ function StackNavigation() {
   )
 }
 
-export default function App() {
-  return (
-   <NavigationContainer>
-      <View style={{flex:1}}>
-        <AppStatusBar />
-        <StackNavigation /> 
-      </View>
-   </NavigationContainer>
-  )
+export default class App extends React.Component {
+
+  componentDidMount() {
+    setLocalNotification()
+  }
+
+  render() {
+    return (
+      <NavigationContainer>
+         <View style={{flex:1}}>
+           <AppStatusBar />
+           <StackNavigation /> 
+         </View>
+      </NavigationContainer>
+     )
+  }
 }

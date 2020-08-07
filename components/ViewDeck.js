@@ -14,7 +14,9 @@ class ViewDeck extends React.Component {
     async componentDidMount() {
         // Fetch the Deck Details
         const { deckTitle } = this.props.route.params
-        const deckDetails = await getDeck(deckTitle)
+        const deckDetails = await getDeck(deckTitle).catch((error) => {
+            console.error('Individual Deck data could not be received ', error)
+        })
         this.setState({
             deck: deckDetails
         })
@@ -38,6 +40,7 @@ class ViewDeck extends React.Component {
                 'The Deck could not be deleted. Please try again'
             )
         })
+        this.props.navigation.navigate('Home');
     }
 
     render() {
