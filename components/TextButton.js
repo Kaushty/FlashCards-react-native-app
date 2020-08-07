@@ -1,11 +1,12 @@
 import React from 'react'
 import { Text, TouchableOpacity, StyleSheet } from 'react-native'
 
-export default function TextButton({ onPress, name, ...rest}) {
+export default function TextButton({ onPress, color, name, ...rest}) {
     return(
         <TouchableOpacity 
             onPress={onPress}
-            style={styles.btnSub}
+            style={color ? [styles.btnSub, {backgroundColor: color}] : [styles.btnSub]}
+
         >
             <Text style={styles.btnTxt}>
                 {name}

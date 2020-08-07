@@ -15,10 +15,23 @@ class DeckList extends Component {
             decks: result,
         })
     }
-    
+
     render() {
-        const { decks } = this.state
-        
+        const { decks } = this.state 
+        const { navigation } = this.props
+
+        // React.useEffect(() => {
+        //     const unsubscribe = navigation.addListener('tabPress', (e) => {
+        //       // Prevent default behavior
+        //       e.preventDefault();
+          
+        //       // Do something manually
+        //       // ...
+        //     });
+          
+        //     return unsubscribe;
+        //   }, [navigation]);
+
         return(
             <View style={styles.container} >
                 <Text style={styles.title}>
@@ -31,7 +44,9 @@ class DeckList extends Component {
                         // Display individual cards
                         const questions = decks[title].questions
                         return(
-                            <TouchableOpacity key={title} style={styles.card}>
+                            <TouchableOpacity key={title} style={styles.card}
+                                onPress={() => this.props.navigation.navigate('ViewDeck',{ deckTitle: title })}
+                            >
                                 <Text style={styles.cardTitle}>
                                     {title}
                                 </Text>
@@ -65,18 +80,17 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: 'black',
         backgroundColor: '#f7f7f7',
-        fontSize: 20,
+        fontSize: 30,
         borderRadius: 20,
     },
     cardList: {
-        
         padding: 10,
         alignItems: 'center',
     },
     card: {
         flex: 1,
         width: 300,
-        minHeight: 230,
+        minHeight: 200,
         padding: 10,
         margin: 10,
         alignItems: 'center',
@@ -84,7 +98,7 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderWidth: 1,
         borderRadius: 20,
-        backgroundColor: '#f9f9f9',
+        backgroundColor: '#edeeef',
     },
     cardTitle: {
         fontSize: 20,

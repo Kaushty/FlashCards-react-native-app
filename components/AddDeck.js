@@ -18,7 +18,6 @@ class AddDeck extends React.Component {
             this.setState({
                 deckName: '',
             })
-
             // Return to DeckList
             this.props.navigation.navigate('Decks')
         }

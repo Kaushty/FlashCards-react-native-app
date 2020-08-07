@@ -49,10 +49,9 @@ export const getDecks = async () => {
             newData = await getDecks()
             return newData
         }
-        console.log(JSON.stringify(data))
         return data
     }catch(error){
-        console.log('Error while fetching data from AsynStorage', error)
+        console.error('Error while fetching data from AsynStorage', error)
     }
 }
 
@@ -62,7 +61,7 @@ export const clearDecks = async () => {
         await AsyncStorage.removeItem(STORAGE_KEY)        
     }
     catch(error){
-        console.log('Failed to clear AsyncStorage', error)
+        console.error('Failed to clear AsyncStorage', error)
     }
 }
 
@@ -71,7 +70,8 @@ export const getDeck = async (deckId) => {
     try{
         const response = await AsyncStorage.getItem(STORAGE_KEY)        
         const data = JSON.parse(response)
-        return data[deckId] ? data[deckId] : {}
+        // console.log(deckId)
+        return data[deckId]
     }catch(error){
         console.error('Error while fetching data from AsynStorage', error)
     }
