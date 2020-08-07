@@ -11,7 +11,7 @@ This project was created with [Expo](https://github.com/expo/expo), and is teste
 
 ## Overview 
 
-'UdaciCards' is a react-native application built using expo-cli, it also uses Redux for predictable state management. <br />
+'FlashCards' is a react-native application built using expo-cli. <br />
 This app lets users create new flash-cards, allocate them in different decks and also to take a quiz on a particular deck.
 
 
@@ -34,7 +34,6 @@ Download the 'expo-client' app on your smartphone to scan and run the applicatio
 * react
 * react-dom
 * react-native
-* redux
 * react-navigation
 * AsyncStorage
 
