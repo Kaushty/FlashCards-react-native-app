@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
         color: 'black',
         backgroundColor: '#f7f7f7',
         fontSize: 22,
-        borderRadius: 20,
+        borderRadius: 20,        
     },
     text: {
         fontSize: 18,        

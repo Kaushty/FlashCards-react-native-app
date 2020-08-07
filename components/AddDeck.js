@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f7f7f7',
         fontSize: 30,
         borderRadius: 20,
+        fontWeight: 'bold',
     },
     subTitle: {
         fontSize: 20,        

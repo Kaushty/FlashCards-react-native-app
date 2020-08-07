@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f7f7f7',
         fontSize: 30,
         borderRadius: 20,
+        fontWeight: 'bold',
     },
     cardList: {
         padding: 10,
@@ -102,10 +103,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#edeeef',
     },
     cardTitle: {
-        fontSize: 20,
+        fontSize: 23,
+        fontWeight: '700',
     },
     cardText: {
-        fontSize: 12,
+        fontSize: 16,
     }
 })
 
