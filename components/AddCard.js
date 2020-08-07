@@ -20,7 +20,6 @@ export default class AddCard extends React.Component {
                 answer: answer.trim()
             }
             // Save the card
-            console.log('Saving Card to storage')
             saveQuestion(deckTitle, card).catch(() => {
                 Alert.alert(
                     'Action could not be completed',
@@ -34,7 +33,6 @@ export default class AddCard extends React.Component {
                 'Please fill all the details'
             )
         }
-        // route back to card view
     }
 
     render() {

@@ -13,21 +13,41 @@ class ViewDeck extends React.Component {
     }
 
     async componentDidMount() {
-        const { deckTitle } = this.props.route.params
-        const deckData = await getDeck(deckTitle).catch((error) => {
-            console.error('Individual Deck data could not be received ', error)
-        })
-        if( deckData !== undefined){  
-            const totalQuestions = deckData.questions.length
-            this.setState({
-                deckData,
-                totalQuestions,
+
+        const {navigation} = this.props;
+        navigation.addListener('focus', async () => {
+            const { deckTitle } = this.props.route.params
+            const deckData = await getDeck(deckTitle).catch((error) => {
+                console.error('Individual Deck data could not be received ', error)
             })
-        }else{
-            this.setState({
-                isAvailable: false,
-            })
-        }
+            if( deckData !== undefined){  
+                const totalQuestions = deckData.questions.length
+                this.setState({
+                    deckData,
+                    totalQuestions,
+                })
+            }else{
+                this.setState({
+                    isAvailable: false,
+                })
+            }
+        });
+
+        // const { deckTitle } = this.props.route.params
+        // const deckData = await getDeck(deckTitle).catch((error) => {
+        //     console.error('Individual Deck data could not be received ', error)
+        // })
+        // if( deckData !== undefined){  
+        //     const totalQuestions = deckData.questions.length
+        //     this.setState({
+        //         deckData,
+        //         totalQuestions,
+        //     })
+        // }else{
+        //     this.setState({
+        //         isAvailable: false,
+        //     })
+        // }
     }
 
     handleDeleteDeck = async () => {
