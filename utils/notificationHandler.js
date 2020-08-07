@@ -52,5 +52,5 @@ export function clearLocalNotification () {
               }
             })
         }
-      })
+      }).catch(console.log('error'))
   }

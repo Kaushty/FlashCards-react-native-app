@@ -6,6 +6,7 @@ import Constants from 'expo-constants'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { setLocalNotification } from "./utils/notificationHandler";
 import DeckList from './components/DeckListView'
@@ -30,8 +31,18 @@ const Tab = createBottomTabNavigator()
 function TabNavigation(){
   return(
     <Tab.Navigator>
-        <Tab.Screen name='Decks' component={ DeckList } />
-        <Tab.Screen name='Add Deck' component={ AddDeck } />
+        <Tab.Screen name='Decks' component={ DeckList } 
+           options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="home" color={color} size={size} />
+            )}} 
+        />
+        <Tab.Screen name='Add Deck' component={ AddDeck } 
+           options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="plus" color={color} size={size} />
+            )}} 
+        />
     </Tab.Navigator> 
   )
 }

@@ -7,33 +7,25 @@ class DeckList extends Component {
 
     state = {
         decks: {},
-        toUpdate: false,
+        shouldUpdate: false,
     }
-
-    async componentDidMount(){
-        const result = await getDecks().catch((error) => {
-            console.error('Deck Data could not be fetched', error)
-        })
-        this.setState({
-            decks: result,
-        })
+    
+    componentDidMount(){
+        const {navigation} = this.props;
+        navigation.addListener('focus', async () => {
+            //do your thing here
+            const result = await getDecks().catch((error) => {
+                console.error('Deck Data could not be fetched', error)
+            })
+            this.setState({
+                decks: result,
+            })
+        });
     }
 
     render() {
         const { decks } = this.state 
-        const { navigation, route } = this.props
-
-        // React.useEffect(() => {
-        //     const unsubscribe = navigation.addListener('tabPress', (e) => {
-        //       // Prevent default behavior
-        //       e.preventDefault();
-          
-        //       // Do something manually
-        //       // ...
-        //     });
-          
-        //     return unsubscribe;
-        //   }, [navigation]);
+        const { navigation, route } = this.props       
 
         return(
             <View style={styles.container} >
