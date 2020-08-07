@@ -1,13 +1,20 @@
 import React from 'react'
 import { AsyncStorage } from 'react-native'
-import { Permissions, Notifications } from 'expo-permissions'
+import * as Permissions from 'expo-permissions'
+import { Notifications } from 'expo';
+
 
 const NOTIFICATION_KEY = 'UDACICARDS:NOTIFICATION'
-
-export function clearLocalNotification () {
-    return AsyncStorage.removeItem(NOTIFICATION_KEY)
-      .then(Notifications.cancelAllScheduledNotificationsAsync)
-  }
+export function clearLocalNotification() {
+  return AsyncStorage.removeItem(NOTIFICATION_KEY).then(async () => {
+    try {
+      Notifications.cancelAllScheduledNotificationsAsync();
+    } catch (error) {
+      // treat error here
+      console.log(error);
+    }
+  });
+}
   
   function createNotification () {
     return {
@@ -25,32 +32,63 @@ export function clearLocalNotification () {
     }
   }
   
-  export function setLocalNotification () {
-    AsyncStorage.getItem(NOTIFICATION_KEY)
-      .then(JSON.parse)
-      .then((data) => {
-        if (data === null) {
-          Permissions.askAsync(Permissions.NOTIFICATIONS)
-            .then(({ status }) => {
-              if (status === 'granted') {
-                Notifications.cancelAllScheduledNotificationsAsync()
+  // export function setLocalNotification () {
+  //   AsyncStorage.getItem(NOTIFICATION_KEY)
+  //     .then(JSON.parse)
+  //     .then((data) => {
+  //       if (data === null) {
+  //         Permissions.askAsync(Permissions.NOTIFICATIONS)
+  //           .then(({ status }) => {
+  //             if (status === 'granted') {
+  //               Notifications.cancelAllScheduledNotificationsAsync()
   
-                let tomorrow = new Date()
-                tomorrow.setDate(tomorrow.getDate() + 1)
-                tomorrow.setHours(20)
-                tomorrow.setMintutes(0)
+  //               let tomorrow = new Date()
+  //               tomorrow.setDate(tomorrow.getDate() + 1)
+  //               tomorrow.setHours(20)
+  //               tomorrow.setMinutes(0)
   
-                Notifications.scheduleLocalNotificationsAsync(
-                  createNotification(),
-                  {
-                    time: tomorrow,
-                    repeat: 'day',
-                  }
-                )
+  //               Notifications.scheduleLocalNotificationsAsync(
+  //                 createNotification(),
+  //                 {
+  //                   time: tomorrow,
+  //                   repeat: 'day',
+  //                 }
+  //               )
   
-                AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true))
-              }
-            })
-        }
-      }).catch(console.log('error'))
-  }
+  //               AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true))
+  //             }
+  //           })
+  //       }
+  //     }).catch(console.log('error'))
+  // }
+
+  
+export function setLocalNotification () {
+  AsyncStorage.getItem(NOTIFICATION_KEY)
+    .then(JSON.parse)
+    .then((data) => {
+      if (data === null) {
+        Permissions.askAsync(Permissions.NOTIFICATIONS)
+          .then(({ status }) => {
+            if (status === 'granted') {
+              Notifications.cancelAllScheduledNotificationsAsync()
+
+              let tomorrow = new Date()
+              tomorrow.setDate(tomorrow.getDate() + 1)
+              tomorrow.setHours(20)
+              tomorrow.setMinutes(0)
+
+              Notifications.scheduleLocalNotificationAsync(
+                createNotification(),
+                {
+                  time: tomorrow,
+                  repeat: 'day',
+                }
+              )
+
+              AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true))
+            }
+          })
+      }
+    })
+}

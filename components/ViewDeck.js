@@ -7,26 +7,25 @@ import TextButton from './TextButton'
 class ViewDeck extends React.Component {
 
     state={
-        deck: {},
+        deckData: null,
+        totalQuestions: 0,
         isAvailable: true,
     }
 
     async componentDidMount() {
-        // Fetch the Deck Details
         const { deckTitle } = this.props.route.params
-        const deckDetails = await getDeck(deckTitle).catch((error) => {
+        const deckData = await getDeck(deckTitle).catch((error) => {
             console.error('Individual Deck data could not be received ', error)
         })
-        this.setState({
-            deck: deckDetails
-        })
-        if( deckDetails === undefined){            
+        if( deckData !== undefined){  
+            const totalQuestions = deckData.questions.length
             this.setState({
-                isAvailable: false,
+                deckData,
+                totalQuestions,
             })
         }else{
             this.setState({
-                deck: deckDetails,
+                isAvailable: false,
             })
         }
     }
@@ -45,9 +44,19 @@ class ViewDeck extends React.Component {
 
     render() {
         const { deckTitle } = this.props.route.params
-        const { deck } = this.state
-        
+        const { deckData, totalQuestions } = this.state
+                
         if(!this.state.isAvailable){
+            return(
+                <View>
+                    <Text>
+                        No Data found for this Deck. Please try adding this deck again.
+                    </Text>
+                </View>
+            )
+        }
+
+        if(this.state.deckData === null) {
             return(
                 <View>
                     <Text>
@@ -61,11 +70,10 @@ class ViewDeck extends React.Component {
             <View style={styles.container}>
                 <View style={styles.textContent}>
                     <Text style={styles.title}>
-                        {`${ deck.title }`}
+                        {`${ deckData.title }`}
                     </Text> 
                     <Text style={styles.content}>
-                        {/* { deck.questions.length <= 1 ? `${deck.questions.length} Question` : `${deck.questions.length} Questions`} */}
-                        2 Cards
+                        { totalQuestions <= 1 ? `${totalQuestions} Card` : `${totalQuestions} Cards` }
                     </Text>
                 </View>
                 <View>
