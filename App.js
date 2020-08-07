@@ -10,6 +10,8 @@ import { createStackNavigator } from '@react-navigation/stack'
 import DeckList from './components/DeckListView'
 import AddDeck from './components/AddDeck'
 import ViewDeck from './components/ViewDeck'
+import AddCard from './components/AddCard'
+import QuizView from './components/QuizView'
 
 function AppStatusBar () {
   return(
@@ -41,6 +43,12 @@ function StackNavigation() {
       <Stack.Screen name='Home' component={TabNavigation}/>
       <Stack.Screen name='ViewDeck' component={ViewDeck}
         options={ {title: 'View Deck'} }
+      />
+      <Stack.Screen name='AddCard' component={AddCard} 
+        options={ {title: 'Add Card'}}
+      />
+      <Stack.Screen name='QuizView' component={QuizView}
+        options={ {title: 'Quiz Time'}}
       />
     </Stack.Navigator>
   )

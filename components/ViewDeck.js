@@ -1,7 +1,7 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Alert } from 'react-native'
 
-import { getDeck } from '../utils/helper'
+import { getDeck, deleteDeck } from '../utils/helper'
 import TextButton from './TextButton'
 
 class ViewDeck extends React.Component {
@@ -18,7 +18,7 @@ class ViewDeck extends React.Component {
         this.setState({
             deck: deckDetails
         })
-        if( deckDetails === 'undefined'){            
+        if( deckDetails === undefined){            
             this.setState({
                 isAvailable: false,
             })
@@ -29,8 +29,19 @@ class ViewDeck extends React.Component {
         }
     }
 
+    handleDeleteDeck = async () => {
+        const { deckTitle } = this.props.route.params
+        console.log('Deleting Deck')
+        await deleteDeck(deckTitle).catch(() => {
+            Alert.alert(
+                'Action could not be completed',
+                'The Deck could not be deleted. Please try again'
+            )
+        })
+    }
+
     render() {
-        // const { deckTitle } = this.props.route.params
+        const { deckTitle } = this.props.route.params
         const { deck } = this.state
         
         if(!this.state.isAvailable){
@@ -50,14 +61,18 @@ class ViewDeck extends React.Component {
                         {`${ deck.title }`}
                     </Text> 
                     <Text style={styles.content}>
-                        { deck.questions.length <= 1 ? `${deck.questions.length} Question` : `${deck.questions.length} Questions`}
+                        {/* { deck.questions.length <= 1 ? `${deck.questions.length} Question` : `${deck.questions.length} Questions`} */}
                         2 Cards
                     </Text>
                 </View>
                 <View>
-                    <TextButton name='Add Card'/>
-                    <TextButton name='Take Quiz'/>
-                    <TextButton name='Delete Deck' color='red'/>
+                    <TextButton name='Add Card' 
+                        onPress={() => this.props.navigation.navigate('AddCard', { deckTitle })}
+                    />
+                    <TextButton name='Take Quiz'
+                        onPress={() => this.props.navigation.navigate('QuizView', { deckTitle })}
+                    />
+                    <TextButton name='Delete Deck' color='red' onPress={this.handleDeleteDeck}/>
                 </View>
             </View>
         )

@@ -58,7 +58,9 @@ export const getDecks = async () => {
 // Function to clear AsyncStorage 
 export const clearDecks = async () => {
     try{
-        await AsyncStorage.removeItem(STORAGE_KEY)        
+        await AsyncStorage.removeItem(STORAGE_KEY)      
+        const data = await AsyncStorage.getItem(STORAGE_KEY)
+        console.log(JSON.parse(data))  
     }
     catch(error){
         console.error('Failed to clear AsyncStorage', error)
@@ -104,11 +106,11 @@ export const saveQuestion = async (deckId, card) => {
             const questions = data[deckId].questions.concat(card)
             AsyncStorage.mergeItem(STORAGE_KEY,
                 JSON.stringify({
-                    deckId: {
+                    [deckId]: {
                         title: deckId,
                         questions
                     }
-                }))
+                }))            
         })
     }
     catch(error){
@@ -117,3 +119,15 @@ export const saveQuestion = async (deckId, card) => {
 }
 
 // Function to delete a deck
+export const deleteDeck = async (deckTitle) => {
+    try{
+        const data = await AsyncStorage.getItem(STORAGE_KEY)
+        const deckData = await JSON.parse(data)
+        deckData[deckTitle] = null
+        delete deckData[deckTitle]
+        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(deckData))
+    }
+    catch(error){
+        console.error('Error occured while deleting the deck ',error)
+    }
+}

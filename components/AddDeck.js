@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableOpactiy, TextInput, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpactiy, TextInput, StyleSheet, Alert } from 'react-native'
 
 import { saveDeckTitle, clearDecks } from "../utils/helper"
 import TextButton from "./TextButton"
@@ -10,21 +10,27 @@ class AddDeck extends React.Component {
     }
 
     saveDeck = () => {
-        if(this.state.deckName !== ''){
-            const title = this.state.deckName
+        const { deckName } = this.state
+        if(deckName.trim() !== ''){            
             // Save deck to store and localstorage
-            saveDeckTitle(title)
+            saveDeckTitle(deckName.trim())
             // Reset the form
             this.setState({
                 deckName: '',
             })
             // Return to DeckList
-            this.props.navigation.navigate('Decks')
+            this.props.navigation.navigate('Decks', { isUpdated: true })
+        }
+        else{
+            Alert.alert(
+                'Deck title missing',
+                'Please enter a correct name for your deck'
+            )
         }
     }
 
-    clearDecks = () => {
-        clearDecks;
+    clearAllDecks = () => {
+        clearDecks();
     }
 
     render() {
@@ -44,7 +50,7 @@ class AddDeck extends React.Component {
             >
             </TextInput>
             <TextButton name='Submit' onPress={this.saveDeck}/>
-            <TextButton name='Clear Decks' onPress={this.clearDecks} />
+            <TextButton name='Clear all Decks' onPress={this.clearAllDecks} />
         </View>
        )
     }

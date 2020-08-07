@@ -6,7 +6,8 @@ import { _store_data, getDecks } from '../utils/helper'
 class DeckList extends Component {
 
     state = {
-        decks: {}
+        decks: {},
+        toUpdate: false,
     }
 
     async componentDidMount(){
@@ -18,7 +19,7 @@ class DeckList extends Component {
 
     render() {
         const { decks } = this.state 
-        const { navigation } = this.props
+        const { navigation, route } = this.props
 
         // React.useEffect(() => {
         //     const unsubscribe = navigation.addListener('tabPress', (e) => {
