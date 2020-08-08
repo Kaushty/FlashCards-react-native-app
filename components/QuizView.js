@@ -13,6 +13,7 @@ export default class QuizView extends React.Component {
         answeredQuestions: 0,
         correctAnswers: 0,
         showAnswer: false,
+        flipIndex: 0,
     }
 
     async componentDidMount() {
@@ -36,12 +37,21 @@ export default class QuizView extends React.Component {
         }))
     }
 
+    handleOnFlip = (flipIndex) => {
+        this.setState({
+            flipIndex,
+        })
+    }
+
     handleCorrect = () => {
         this.setState((prevState) => ({
             answeredQuestions: prevState.answeredQuestions + 1,
             correctAnswers: prevState.correctAnswers + 1,
             showAnswer: false,
         }))
+        if(this.state.flipIndex === 1){
+            this.card.flip()
+        }
     }
 
     handleIncorrect = () => {
@@ -49,6 +59,9 @@ export default class QuizView extends React.Component {
             answeredQuestions: prevState.answeredQuestions + 1,
             showAnswer: false,
         }))
+        if(this.state.flipIndex === 1){
+            this.card.flip()
+        }
     }
 
     render() {
@@ -104,17 +117,14 @@ export default class QuizView extends React.Component {
                     Question { answeredQuestions + 1 } / { totalQuestions }
                 </Text> 
 
-                {/* <CardFlip style={styles.cardContainer} ref={card => (this.card = card)}>                                   
+                <CardFlip style={styles.cardContainer} ref={card => (this.card = card)}
+                    onFlip={this.handleOnFlip}
+                >                                   
                     <TouchableOpacity                        
                         activeOpacity={1}
                         style={[styles.card, styles.card1]}
-                        onPress={() => {
-                            this.card.flip()
-                            this.setState({
-                                showAnswer: true,
-                            })
-                            }
-                        }>                            
+                        onPress={() => this.card.flip()}
+                    >                            
                         <Text style={styles.label}>
                             {
                                 deckData.questions[answeredQuestions].question
@@ -126,12 +136,8 @@ export default class QuizView extends React.Component {
                     <TouchableOpacity
                         activeOpacity={1}
                         style={[styles.card, styles.card2]}
-                        onPress={() => {
-                            this.card.flip()
-                            this.setState({
-                                showAnswer: false,
-                            })
-                        }}>
+                        onPress={() => this.card.flip()}
+                    >
                         <Text style={styles.label}>
                             {
                                 deckData.questions[answeredQuestions].answer
@@ -139,9 +145,9 @@ export default class QuizView extends React.Component {
                         </Text>                        
                         <Text style={styles.normalText}> Tap on card to show question</Text>
                     </TouchableOpacity>
-                </CardFlip> */}
+                </CardFlip>
 
-                <View style={
+                {/* <View style={
                     showAnswer ? [styles.cardContainer, styles.card2] : [styles.cardContainer, styles.card1]
                 }>
                     <Text style={styles.label}>
@@ -160,7 +166,7 @@ export default class QuizView extends React.Component {
                                 showAnswer ? `Show Question` : `Show Answer`
                             }
                         </Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
                 <TextButton name='Correct' onPress={() => this.handleCorrect()}/>
                 <TextButton name='Incorrect' onPress={() => this.handleIncorrect()}/>         
@@ -253,7 +259,7 @@ const styles = StyleSheet.create({
         textAlign: 'center', 
     },
     normalText: {
-        color: '#000',
+        color: '#f7f7f7',
         fontSize: 16,
         textAlign: 'center',        
     }
