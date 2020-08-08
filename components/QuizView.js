@@ -118,6 +118,7 @@ export default class QuizView extends React.Component {
                 </Text> 
 
                 <CardFlip style={styles.cardContainer} ref={card => (this.card = card)}
+                    duration={250}
                     onFlip={this.handleOnFlip}
                 >                                   
                     <TouchableOpacity                        
