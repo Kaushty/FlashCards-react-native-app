@@ -71,7 +71,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f5f5',
     },
     title: {
-        padding: 10,
         textAlign: 'center',
         color: 'black',
         backgroundColor: '#f7f7f7',

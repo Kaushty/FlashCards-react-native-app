@@ -3,6 +3,7 @@ import { View, Text, Alert, StyleSheet, TouchableOpacity } from 'react-native'
 import CardFlip from 'react-native-card-flip'
 
 import { getDeck } from '../utils/helper';
+import { setLocalNotification, clearLocalNotification } from '../utils/notificationHandler'
 import TextButton from './TextButton';
 
 export default class QuizView extends React.Component {
@@ -11,6 +12,7 @@ export default class QuizView extends React.Component {
         totalQuestions: 0,
         answeredQuestions: 0,
         correctAnswers: 0,
+        showAnswer: false,
     }
 
     async componentDidMount() {
@@ -38,17 +40,19 @@ export default class QuizView extends React.Component {
         this.setState((prevState) => ({
             answeredQuestions: prevState.answeredQuestions + 1,
             correctAnswers: prevState.correctAnswers + 1,
+            showAnswer: false,
         }))
     }
 
     handleIncorrect = () => {
         this.setState((prevState) => ({
             answeredQuestions: prevState.answeredQuestions + 1,
+            showAnswer: false,
         }))
     }
 
     render() {
-        const { deckData, totalQuestions, answeredQuestions, correctAnswers } = this.state;   
+        const { deckData, totalQuestions, answeredQuestions, correctAnswers, showAnswer } = this.state;   
 
         if(deckData === null){
             return(
@@ -73,6 +77,8 @@ export default class QuizView extends React.Component {
         }
 
         if( answeredQuestions === totalQuestions ){
+            clearLocalNotification()
+                .then(setLocalNotification)
             return(
                 <View style={styles.container}>
                     <Text style={[styles.infoText, styles.greetText]}>
@@ -98,27 +104,63 @@ export default class QuizView extends React.Component {
                     Question { answeredQuestions + 1 } / { totalQuestions }
                 </Text> 
 
-                <CardFlip style={styles.cardContainer} ref={card => (this.card = card)}>
-                    <TouchableOpacity
+                {/* <CardFlip style={styles.cardContainer} ref={card => (this.card = card)}>                                   
+                    <TouchableOpacity                        
+                        activeOpacity={1}
                         style={[styles.card, styles.card1]}
-                        onPress={() => this.card.flip()}>
+                        onPress={() => {
+                            this.card.flip()
+                            this.setState({
+                                showAnswer: true,
+                            })
+                            }
+                        }>                            
                         <Text style={styles.label}>
                             {
                                 deckData.questions[answeredQuestions].question
                             }                        
                         </Text>
+                        <Text style={styles.normalText}> Tap on card to show answer</Text>
                     </TouchableOpacity>
+                    
                     <TouchableOpacity
                         activeOpacity={1}
                         style={[styles.card, styles.card2]}
-                        onPress={() => this.card.flip()}>
+                        onPress={() => {
+                            this.card.flip()
+                            this.setState({
+                                showAnswer: false,
+                            })
+                        }}>
                         <Text style={styles.label}>
                             {
                                 deckData.questions[answeredQuestions].answer
                             } 
+                        </Text>                        
+                        <Text style={styles.normalText}> Tap on card to show question</Text>
+                    </TouchableOpacity>
+                </CardFlip> */}
+
+                <View style={
+                    showAnswer ? [styles.cardContainer, styles.card2] : [styles.cardContainer, styles.card1]
+                }>
+                    <Text style={styles.label}>
+                        {
+                            showAnswer ? deckData.questions[answeredQuestions].answer : deckData.questions[answeredQuestions].question
+                        }
+                    </Text>
+                </View>
+                    <TouchableOpacity
+                        onPress={() => this.setState((state) => ({
+                            showAnswer: !state.showAnswer
+                        }))}
+                    >
+                        <Text style={styles.normalText}>
+                            {
+                                showAnswer ? `Show Question` : `Show Answer`
+                            }
                         </Text>
                     </TouchableOpacity>
-                </CardFlip>
 
                 <TextButton name='Correct' onPress={() => this.handleCorrect()}/>
                 <TextButton name='Incorrect' onPress={() => this.handleIncorrect()}/>         
@@ -167,6 +209,7 @@ const styles = StyleSheet.create({
     },    
     card: {
         flex: 1,
+        padding: 10,
         borderRadius: 15,
         shadowColor: 'rgba(0,0,0,0.5)',
         shadowOffset: {
@@ -174,7 +217,7 @@ const styles = StyleSheet.create({
             height: 1,
         },
         shadowOpacity: 0.5,
-    },
+    },    
     card1: {
         backgroundColor: '#FE474C',
     },
@@ -184,11 +227,34 @@ const styles = StyleSheet.create({
     label: {
         flex: 1,
         paddingTop: 60,
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         textAlign: 'center',
         fontSize: 21,
         fontFamily: 'System',
         color: '#f7f7f7',
         backgroundColor: 'transparent',
     },
+    newContainer: {
+        flex: 1,
+        borderWidth: 1,
+        margin: 10,
+        padding: 10,
+        width: 270,
+        maxHeight: 300,
+        borderRadius: 20,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: '#FE474C'
+    },  
+    mainText: {
+        padding: 10,
+        color: '#f7f7f7',
+        fontSize: 21,
+        textAlign: 'center', 
+    },
+    normalText: {
+        color: '#000',
+        fontSize: 16,
+        textAlign: 'center',        
+    }
 })
